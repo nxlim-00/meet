@@ -5,18 +5,12 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
-  /*  useEffect(() => {
-    setSuggestions(allLocations);
-  }, [`${allLocations}`]); // = JSON.stringify(allLocations) */
-
-  useEffect(() => {
-    if (allLocations) {
-      const filteredLocations = allLocations.filter((location) =>
-        location.toUpperCase().includes(query.toUpperCase())
-      );
-      setSuggestions(filteredLocations);
-    }
-  }, [allLocations, query]);
+  const handleItemClicked = (event) => {
+    const value = event.target.textContent;
+    setQuery(value);
+    setShowSuggestions(false);
+    setCurrentCity(value);
+  };
 
   const handleInputChanged = (event) => {
     const value = event.target.value;
@@ -29,12 +23,18 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
     setSuggestions(filteredLocations);
   };
 
-  const handleItemClicked = (event) => {
-    const value = event.target.textContent;
-    setQuery(value);
-    setShowSuggestions(false);
-    setCurrentCity(value);
-  };
+  /* useEffect(() => {
+    if (allLocations) {
+      const filteredLocations = allLocations.filter((location) =>
+        location.toUpperCase().includes(query.toUpperCase())
+      );
+      setSuggestions(filteredLocations);
+    }
+  }, [allLocations, query]); */
+
+  useEffect(() => {
+    setSuggestions(allLocations);
+  }, [`${allLocations}`]);
 
   return (
     <div id="city-search">
@@ -45,6 +45,11 @@ const CitySearch = ({ allLocations, setCurrentCity }) => {
         value={query}
         onFocus={() => setShowSuggestions(true)}
         onChange={handleInputChanged}
+        onInput={() =>
+          query.length === 0
+            ? setShowSuggestions(false)
+            : setShowSuggestions(true)
+        }
       />
       {showSuggestions ? (
         <ul className="suggestions">
