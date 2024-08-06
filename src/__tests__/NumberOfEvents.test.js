@@ -8,20 +8,23 @@ describe('<NumberOfEvents /> component', () => {
     NumberOfEventsComponent = render(<NumberOfEvents />);
   });
 
-  test('render element with role of textbox', () => {
-    const input = NumberOfEventsComponent.queryByRole('textbox');
-    expect(input).toBeInTheDocument();
+  test('renders number of events text input', () => {
+    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
+    expect(numberTextBox).toBeInTheDocument();
+    expect(numberTextBox).toHaveClass('numberOfeventsInput');
   });
 
-  test('default number of events is 32', () => {
-    expect(NumberOfEventsComponent.getByRole('textbox')).toHaveValue('32');
+  test('default number is 32', async () => {
+    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
+    expect(numberTextBox).toHaveValue('32');
   });
 
-  test('change number of events when a user types in the textbox', async () => {
-    const numverOfEvents = NumberOfEventsComponent.getByRole('textbox');
+  test('number of events text box value changes when the user types in it', async () => {
     const user = userEvent.setup();
-    await user.type(numverOfEvents, '{backspace}{backspace}10');
-    NumberOfEventsComponent.rerender(<NumberOfEvents />);
-    expect(numverOfEvents).toHaveValue('10');
+    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
+    await user.type(numberTextBox, '123');
+
+    // 32 (the default value already written) + 123
+    expect(numberTextBox).toHaveValue('32123');
   });
 });
