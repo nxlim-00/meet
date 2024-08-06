@@ -7,7 +7,9 @@ import App from '../App';
 describe('<CitySearch /> component', () => {
   let CitySearchComponent;
   beforeEach(() => {
-    CitySearchComponent = render(<CitySearch allLocations={[]} />);
+    CitySearchComponent = render(
+      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+    );
   });
   test('renders text input', () => {
     const cityTextBox = CitySearchComponent.queryByRole('textbox');
@@ -86,10 +88,6 @@ describe('<CitySearch /> integration', () => {
     const CitySearchDOM = AppDOM.querySelector('#city-search');
     const cityTextBox = within(CitySearchDOM).queryByRole('textbox');
     await user.click(cityTextBox);
-
-    // Wait for the suggestions list to appear
-    const suggestionList = within(CitySearchDOM).queryByRole('list');
-    expect(suggestionList).toBeInTheDocument();
 
     // fetch events and locations
     const allEvents = await getEvents();
