@@ -1,11 +1,14 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import NumberOfEvents from '../components/NumberOfEvents';
+import { getEvents } from '../api';
 
 describe('<NumberOfEvents /> component', () => {
   let NumberOfEventsComponent;
   beforeEach(() => {
-    NumberOfEventsComponent = render(<NumberOfEvents />);
+    NumberOfEventsComponent = render(
+      <NumberOfEvents setCurrentNOE={() => {}} />
+    );
   });
 
   test('renders number of events text input', () => {
@@ -19,12 +22,14 @@ describe('<NumberOfEvents /> component', () => {
     expect(numberTextBox).toHaveValue('32');
   });
 
-  test('number of events text box value changes when the user types in it', async () => {
+  test('change number of events when a user types in the textbox', async () => {
+    const numberOfEvents = NumberOfEventsComponent.getByRole('textbox');
     const user = userEvent.setup();
-    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
-    await user.type(numberTextBox, '123');
-
-    // 32 (the default value already written) + 123
-    expect(numberTextBox).toHaveValue('32123');
+    await user.type(numberOfEvents, '{backspace}{backspace}10');
+    const allEvents = await getEvents();
+    NumberOfEventsComponent.rerender(
+      <NumberOfEvents setCurrentNOE={allEvents} />
+    );
+    expect(numberOfEvents).toHaveValue('10');
   });
 });
