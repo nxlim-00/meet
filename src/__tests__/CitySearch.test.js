@@ -5,28 +5,31 @@ import { extractLocations, getEvents } from '../api';
 import App from '../App';
 
 describe('<CitySearch /> component', () => {
-  let CitySearchComponent;
-  beforeEach(() => {
-    CitySearchComponent = render(
+  test('renders text input', () => {
+    const { queryByRole } = render(
       <CitySearch allLocations={[]} setCurrentCity={() => {}} />
     );
-  });
-  test('renders text input', () => {
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
+    const cityTextBox = queryByRole('textbox');
     expect(cityTextBox).toBeInTheDocument();
     expect(cityTextBox).toHaveClass('city');
   });
 
   test('suggestions list is hidden by default', () => {
-    const suggestionList = CitySearchComponent.queryByRole('list');
+    const { queryByRole } = render(
+      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+    );
+    const suggestionList = queryByRole('list');
     expect(suggestionList).not.toBeInTheDocument();
   });
 
   test('renders a list of suggestions when city textbox gains focus', async () => {
+    const { queryByRole } = render(
+      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+    );
     const user = userEvent.setup();
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
+    const cityTextBox = queryByRole('textbox');
     await user.click(cityTextBox);
-    const suggestionList = CitySearchComponent.queryByRole('list');
+    const suggestionList = queryByRole('list');
     expect(suggestionList).toBeInTheDocument();
     expect(suggestionList).toHaveClass('suggestions');
   });
@@ -35,10 +38,15 @@ describe('<CitySearch /> component', () => {
     const user = userEvent.setup();
     const allEvents = await getEvents();
     const allLocations = extractLocations(allEvents);
-    CitySearchComponent.rerender(<CitySearch allLocations={allLocations} />);
+    const { rerender, queryByRole, queryAllByRole } = render(
+      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+    );
 
     // user types "Berlin" in city textbox
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
+    rerender(
+      <CitySearch allLocations={allLocations} setCurrentCity={() => {}} />
+    );
+    const cityTextBox = queryByRole('textbox');
     await user.type(cityTextBox, 'Berlin');
 
     // filter allLocations to locations matching "Berlin"
@@ -51,7 +59,7 @@ describe('<CitySearch /> component', () => {
       : [];
 
     // get all <li> elements inside the suggestion list
-    const suggestionListItems = CitySearchComponent.queryAllByRole('listitem');
+    const suggestionListItems = queryAllByRole('listitem');
     expect(suggestionListItems).toHaveLength(suggestions.length + 1);
     for (let i = 0; i < suggestions.length; i += 1) {
       expect(suggestionListItems[i].textContent).toBe(suggestions[i]);
@@ -62,16 +70,18 @@ describe('<CitySearch /> component', () => {
     const user = userEvent.setup();
     const allEvents = await getEvents();
     const allLocations = extractLocations(allEvents);
-    CitySearchComponent.rerender(
-      <CitySearch allLocations={allLocations} setCurrentCity={() => {}} />
+    const { rerender, queryByRole, queryAllByRole } = render(
+      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
     );
 
-    const cityTextBox = CitySearchComponent.queryByRole('textbox');
+    rerender(
+      <CitySearch allLocations={allLocations} setCurrentCity={() => {}} />
+    );
+    const cityTextBox = queryByRole('textbox');
     await user.type(cityTextBox, 'Berlin');
 
     // the suggestion's textContent look like this: "Berlin, Germany"
-    const BerlinGermanySuggestion =
-      CitySearchComponent.queryAllByRole('listitem')[0];
+    const BerlinGermanySuggestion = queryAllByRole('listitem')[0];
 
     await user.click(BerlinGermanySuggestion);
 
@@ -82,8 +92,8 @@ describe('<CitySearch /> component', () => {
 describe('<CitySearch /> integration', () => {
   test('renders suggestions list when the app is rendered.', async () => {
     const user = userEvent.setup();
-    const AppComponent = render(<App />);
-    const AppDOM = AppComponent.container.firstChild;
+    const { container } = render(<App />);
+    const AppDOM = container.firstChild;
 
     const CitySearchDOM = AppDOM.querySelector('#city-search');
     const cityTextBox = within(CitySearchDOM).queryByRole('textbox');
