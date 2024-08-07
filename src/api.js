@@ -1,3 +1,4 @@
+import NProgress from 'nprogress';
 import mockData from './mock-data';
 
 export const extractLocations = (events) => {
@@ -50,7 +51,14 @@ const getToken = async (code) => {
 
 // This function will fetch the list of all events
 export const getEvents = async () => {
+  /* if (window.location.href.startsWith('http://localhost')) {
+    return mockData;
+  } */
+
+  NProgress.start();
+
   if (window.location.href.startsWith('http://localhost')) {
+    NProgress.done();
     return mockData;
   }
 
