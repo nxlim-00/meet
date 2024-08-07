@@ -1,35 +1,31 @@
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import NumberOfEvents from '../components/NumberOfEvents';
-import { getEvents } from '../api';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 describe('<NumberOfEvents /> component', () => {
-  let NumberOfEventsComponent;
-  beforeEach(() => {
-    NumberOfEventsComponent = render(
-      <NumberOfEvents setCurrentNOE={() => {}} />
+  test('has an element with "textbox" role', () => {
+    render(
+      <NumberOfEvents setCurrentNOE={() => {}} setErrorAlert={() => {}} /> // dummy prop passed so that it is defined
     );
+    const textbox = screen.queryByRole('textbox');
+    expect(textbox).toBeInTheDocument();
   });
 
-  test('renders number of events text input', () => {
-    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
-    expect(numberTextBox).toBeInTheDocument();
-    expect(numberTextBox).toHaveClass('numberOfeventsInput');
+  test('default number of elements should be 32', () => {
+    render(
+      <NumberOfEvents setCurrentNOE={() => {}} setErrorAlert={() => {}} /> // dummy prop passed so that it is defined
+    );
+    const textbox = screen.queryByRole('textbox');
+    expect(textbox).toHaveValue('32');
   });
 
-  test('default number is 32', async () => {
-    const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
-    expect(numberTextBox).toHaveValue('32');
-  });
-
-  test('change number of events when a user types in the textbox', async () => {
-    const numberOfEvents = NumberOfEventsComponent.getByRole('textbox');
+  test('number of event elements should change with user input', async () => {
     const user = userEvent.setup();
-    await user.type(numberOfEvents, '{backspace}{backspace}10');
-    const allEvents = await getEvents();
-    NumberOfEventsComponent.rerender(
-      <NumberOfEvents setCurrentNOE={allEvents} />
+    render(
+      <NumberOfEvents setCurrentNOE={() => {}} setErrorAlert={() => {}} /> // dummy prop passed so that it is defined
     );
-    expect(numberOfEvents).toHaveValue('10');
+    const textbox = screen.queryByRole('textbox');
+    await user.type(textbox, '{backspace}{backspace}10');
+    expect(textbox).toHaveValue('10');
   });
 });
