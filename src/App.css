@@ -18,6 +18,18 @@
   box-sizing: border-box;
 }
 
+h1 {
+  color: var(--text-color);
+}
+
+.choose {
+  color: var(--primary-color);
+}
+
+.noe {
+  color: var(--primary-color);
+}
+
 ul {
   padding: 0;
   list-style: none;
@@ -98,6 +110,7 @@ input[type='number'] {
 
 .eventHeader {
   text-align: center;
+  color: var(--text-color);
 }
 
 .details {
