@@ -98,9 +98,15 @@ input[type='number'] {
   color: var(--light-cyan);
 }
 
+.event-container {
+  display: flex;
+  justify-content: center;
+}
+
 .event {
   padding: 10px 20px 35px;
-  margin: 0 200px 20px;
+  width: 600px;
+  margin-bottom: 20px;
   text-align: left;
   border: 1px solid var(--primary-color);
   border-radius: 10px;
