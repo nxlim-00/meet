@@ -1,18 +1,30 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const NumberOfEvents = ({ setCurrentNOE }) => {
+const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
   const [number, setNumber] = useState(32);
 
-  const handleInputChanged = (event) => {
-    const value = event.target.value;
+  const handleInputChanged = (e) => {
+    let value = e.target.value;
     setNumber(value);
+
+    let errorText = '';
+
+    // Check if the value is empty, not a number, or less than or equal to 1
+    if (value === '' || isNaN(value) || Number(value) <= 1) {
+      errorText = 'Please enter a valid number greater than 1.';
+    } else {
+      errorText = '';
+    }
+
     setCurrentNOE(value);
+    setErrorAlert(errorText);
   };
 
   return (
     <div id="numberOfevents">
       <label className="noe" htmlFor="numberOfeventsInput">
-        Number of Events:{' '}
+        Number of Events: {''}
       </label>
       <input
         type="text"
@@ -26,3 +38,7 @@ const NumberOfEvents = ({ setCurrentNOE }) => {
 };
 
 export default NumberOfEvents;
+
+NumberOfEvents.propTypes = {
+  setCurrentNOE: PropTypes.func.isRequired,
+};
