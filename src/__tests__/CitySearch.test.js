@@ -7,7 +7,11 @@ import App from '../App';
 describe('<CitySearch /> component', () => {
   test('renders text input', () => {
     const { queryByRole } = render(
-      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={[]}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
     const cityTextBox = queryByRole('textbox');
     expect(cityTextBox).toBeInTheDocument();
@@ -16,7 +20,11 @@ describe('<CitySearch /> component', () => {
 
   test('suggestions list is hidden by default', () => {
     const { queryByRole } = render(
-      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={[]}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
     const suggestionList = queryByRole('list');
     expect(suggestionList).not.toBeInTheDocument();
@@ -24,7 +32,11 @@ describe('<CitySearch /> component', () => {
 
   test('renders a list of suggestions when city textbox gains focus', async () => {
     const { queryByRole } = render(
-      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={[]}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
     const user = userEvent.setup();
     const cityTextBox = queryByRole('textbox');
@@ -39,12 +51,20 @@ describe('<CitySearch /> component', () => {
     const allEvents = await getEvents();
     const allLocations = extractLocations(allEvents);
     const { rerender, queryByRole, queryAllByRole } = render(
-      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={[]}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
 
     // user types "Berlin" in city textbox
     rerender(
-      <CitySearch allLocations={allLocations} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
     const cityTextBox = queryByRole('textbox');
     await user.type(cityTextBox, 'Berlin');
@@ -71,11 +91,19 @@ describe('<CitySearch /> component', () => {
     const allEvents = await getEvents();
     const allLocations = extractLocations(allEvents);
     const { rerender, queryByRole, queryAllByRole } = render(
-      <CitySearch allLocations={[]} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={[]}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
 
     rerender(
-      <CitySearch allLocations={allLocations} setCurrentCity={() => {}} />
+      <CitySearch
+        allLocations={allLocations}
+        setCurrentCity={() => {}}
+        setInfoAlert={() => {}}
+      />
     );
     const cityTextBox = queryByRole('textbox');
     await user.type(cityTextBox, 'Berlin');
