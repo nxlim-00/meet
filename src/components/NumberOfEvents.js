@@ -11,7 +11,7 @@ const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
     let errorText = '';
 
     // Check if the value is empty, not a number, or less than or equal to 1
-    if (value === '' || isNaN(value) || Number(value) <= 1) {
+    if (value === '' || isNaN(value) || Number(value) <= 0) {
       errorText = 'Please enter a valid number greater than 1.';
     } else {
       errorText = '';
