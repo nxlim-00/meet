@@ -33,18 +33,23 @@ const CitySearch = ({ allLocations, setCurrentCity, setInfoAlert }) => {
     setInfoAlert(infoText);
   };
 
-  /* useEffect(() => {
-    if (allLocations) {
-      const filteredLocations = allLocations.filter((location) =>
-        location.toUpperCase().includes(query.toUpperCase())
-      );
-      setSuggestions(filteredLocations);
-    }
-  }, [allLocations, query]); */
-
   useEffect(() => {
     setSuggestions(allLocations);
   }, [`${allLocations}`]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!document.getElementById('city-search').contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    window.addEventListener('click', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div id="city-search">
