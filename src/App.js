@@ -1,7 +1,7 @@
 import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
-import { InfoAlert, ErrorAlert } from './components/Alert';
+import { InfoAlert, ErrorAlert, WarningAlert } from './components/Alert';
 import { useEffect, useState } from 'react';
 import { extractLocations, getEvents } from './api';
 
@@ -14,8 +14,14 @@ const App = () => {
   const [currentCity, setCurrentCity] = useState('See all cities');
   const [infoAlert, setInfoAlert] = useState('');
   const [errorAlert, setErrorAlert] = useState('');
+  const [warningAlert, setWarningAlert] = useState('');
 
   useEffect(() => {
+    if (!navigator.onLine) {
+      setWarningAlert('You are offline. Data may be outdated.');
+    } else {
+      setWarningAlert('');
+    }
     fetchData();
   }, [currentCity, currentNOE]);
 
@@ -36,6 +42,7 @@ const App = () => {
       <div className="alerts-container">
         {infoAlert.length ? <InfoAlert text={infoAlert} /> : null}
         {errorAlert.length ? <ErrorAlert text={errorAlert} /> : null}
+        {warningAlert.length ? <WarningAlert text={warningAlert} /> : null}
       </div>
       <p className="choose">Choose your nearest city:</p>
       <CitySearch
