@@ -1,4 +1,4 @@
-# Event Finder App
+# Meet App
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -8,7 +8,7 @@
 - [License](#license)
 
 ## Introduction
-Event Finder is a React-based web application that allows users to search for and explore events near a chosen city. The app can be used offline, providing access to previously loaded event information even when there is no internet connection.
+Meet is a React-based web application that allows users to search for and explore events near a chosen city. The app can be used offline, providing access to previously loaded event information even when there is no internet connection.
 
 ## Features
 - **Filter Events by City:** Users can filter events by selecting a city, allowing them to view a list of events taking place in that city.
@@ -35,7 +35,7 @@ Event Finder is a React-based web application that allows users to search for an
    - Click on the charts option within event details to visualize various metrics related to the event.
 
 ## Offline Functionality
-The Event Finder app supports offline functionality:
+The Meet app supports offline functionality:
 - When offline, the app will display previously loaded event data.
 - Users can still view event details and any cached information.
 - Filtering by a new city or updating event data requires an internet connection.
